@@ -31,39 +31,39 @@ export default function InstagramSection() {
           pilgrimage experiences, and upcoming departures on Instagram.
         </p>
 
-        <div className="insta-masonry reveal">
-          {posts.map((post, i) => (
-            <div
-              key={i}
-              className={`insta-card ${
-                i === 0 || i === 4 ? "insta-card-tall" : ""
-              } ${i === 2 || i === 5 ? "insta-card-wide" : ""}`}
-            >
-              <Image
-                src={post.src}
-                alt={`Instagram post ${i + 1}`}
-                fill
-                style={{ objectFit: "cover" }}
-                sizes="(max-width: 640px) 50vw, 25vw"
-              />
-              <div className="insta-card-overlay">
-                {post.type === "reel" && (
-                  <div className="insta-play-badge">
-                    <Play size={20} fill="white" />
+        <div className="insta-wave-grid reveal">
+          {posts.map((post, i) => {
+            // Alternate vertical offset for wave effect
+            const offsetClass = i % 2 === 0 ? "insta-wave-up" : "insta-wave-down";
+            
+            return (
+              <div key={i} className={`insta-card ${offsetClass}`}>
+                <Image
+                  src={post.src}
+                  alt={`Instagram post ${i + 1}`}
+                  fill
+                  style={{ objectFit: "cover" }}
+                  sizes="(max-width: 640px) 50vw, 25vw"
+                />
+                <div className="insta-card-overlay">
+                  {post.type === "reel" && (
+                    <div className="insta-play-badge">
+                      <Play size={20} fill="white" />
+                    </div>
+                  )}
+                  {post.type === "photo" && (
+                    <div className="insta-camera-badge">
+                      <Camera size={16} />
+                    </div>
+                  )}
+                  <div className="insta-card-stats">
+                    <Heart size={14} fill="white" color="white" />
+                    <span>{post.likes}</span>
                   </div>
-                )}
-                {post.type === "photo" && (
-                  <div className="insta-camera-badge">
-                    <Camera size={16} />
-                  </div>
-                )}
-                <div className="insta-card-stats">
-                  <Heart size={14} fill="white" color="white" />
-                  <span>{post.likes}</span>
                 </div>
               </div>
-            </div>
-          ))}
+            );
+          })}
         </div>
 
         <a
