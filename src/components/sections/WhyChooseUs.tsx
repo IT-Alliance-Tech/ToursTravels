@@ -59,28 +59,19 @@ export default function WhyChooseUs() {
           </p>
         </div>
 
-        <div className="why-choose-blocks">
+        <div className="why-choose-grid">
           {features.map((feature, i) => {
             const Icon = feature.icon;
-            const isReversed = i % 2 !== 0;
 
             return (
-              <div
-                key={i}
-                className={`why-choose-block reveal ${isReversed ? "reversed" : ""}`}
-              >
-                <div className="why-choose-icon-col">
-                  <div
-                    className="why-choose-icon-container"
-                    style={{ background: feature.accent }}
-                  >
-                    <Icon size={36} strokeWidth={1.5} />
-                  </div>
-                  {i < features.length - 1 && (
-                    <div className="why-choose-connector" />
-                  )}
+              <div key={i} className="why-choose-card reveal">
+                <div
+                  className="why-choose-card-icon"
+                  style={{ background: feature.accent }}
+                >
+                  <Icon size={32} strokeWidth={1.5} />
                 </div>
-                <div className="why-choose-text-col">
+                <div className="why-choose-card-content">
                   <h3>{feature.title}</h3>
                   <p>{feature.desc}</p>
                 </div>
