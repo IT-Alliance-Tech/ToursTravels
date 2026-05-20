@@ -142,7 +142,7 @@ body { font-family: var(--font-body); color: var(--charcoal); background: var(--
 }
 
 /* ===== SECTIONS COMMON ===== */
-.section { padding: 6rem 2rem; }
+.section { padding: 4rem 2rem; }
 .section-container { max-width: 1200px; margin: 0 auto; }
 .section-label {
   display: inline-block; font-size: 0.8rem; font-weight: 600; letter-spacing: 2px;
@@ -228,7 +228,7 @@ body { font-family: var(--font-body); color: var(--charcoal); background: var(--
 
 /* ===== CTA SECTION ===== */
 .cta-section {
-  position: relative; padding: 8rem 2rem; text-align: center;
+  position: relative; padding: 5rem 2rem; text-align: center;
   background: url('/hero-bg.png') center/cover no-repeat;
 }
 .cta-section::before { content: ''; position: absolute; inset: 0; background: rgba(17,17,17,0.85); }
