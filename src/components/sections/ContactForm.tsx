@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Send, CheckCircle2 } from "lucide-react";
+import { Send, CheckCircle2, AlertCircle, Loader2 } from "lucide-react";
 
 const destinations = [
   "Char Dham Yatra",
@@ -20,7 +20,8 @@ const months = [
 ];
 
 export default function ContactForm() {
-  const [submitted, setSubmitted] = useState(false);
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMsg, setErrorMsg] = useState("");
   const [form, setForm] = useState({
     fullName: "", phone: "", whatsapp: "",
     destination: "", travelers: "", month: "", message: "",
@@ -32,19 +33,30 @@ export default function ContactForm() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Build WhatsApp message
-    const msg = encodeURIComponent(
-      `Hello! I'd like to enquire about a spiritual tour.\n\n` +
-      `Name: ${form.fullName}\nPhone: ${form.phone}\nWhatsApp: ${form.whatsapp}\n` +
-      `Destination: ${form.destination}\nTravelers: ${form.travelers}\n` +
-      `Travel Month: ${form.month}\n\nMessage: ${form.message}`
-    );
-    setSubmitted(true);
-    setTimeout(() => {
-      window.open(`https://wa.me/919876543210?text=${msg}`, "_blank");
-    }, 800);
+    setStatus("loading");
+    setErrorMsg("");
+
+    try {
+      const res = await fetch("/api/send-enquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(form),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok || !data.success) {
+        throw new Error(data.error || "Failed to send enquiry");
+      }
+
+      setStatus("success");
+      setForm({ fullName: "", phone: "", whatsapp: "", destination: "", travelers: "", month: "", message: "" });
+    } catch (err: unknown) {
+      setStatus("error");
+      setErrorMsg(err instanceof Error ? err.message : "Something went wrong. Please try again.");
+    }
   };
 
   return (
@@ -56,7 +68,7 @@ export default function ContactForm() {
             <span className="section-label" style={{ color: "var(--gold)" }}>Quick Enquiry</span>
             <h2 className="section-title" style={{ color: "white" }}>Send Your Enquiry</h2>
             <p style={{ color: "rgba(255,255,255,0.65)", lineHeight: 1.8, marginTop: "1rem" }}>
-              Fill in the form and our travel coordinator will reach out to you on WhatsApp
+              Fill in the form and our travel coordinator will reach out to you
               with personalized package recommendations.
             </p>
             <div className="contact-form-features">
@@ -72,17 +84,39 @@ export default function ContactForm() {
                 </div>
               ))}
             </div>
+
+            <div style={{ marginTop: "2.5rem", padding: "1.5rem", background: "rgba(255,255,255,0.04)", borderRadius: "16px", border: "1px solid rgba(255,255,255,0.08)" }}>
+              <h3 style={{ color: "white", fontSize: "1.05rem", marginBottom: "0.5rem" }}>Need immediate help?</h3>
+              <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.9rem", marginBottom: "1.25rem", lineHeight: 1.5 }}>
+                Skip the form and reach out directly to our travel experts for instant booking and queries.
+              </p>
+              <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap" }}>
+                <a href="https://wa.me/919876543210" target="_blank" rel="noreferrer" style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#25D366", textDecoration: "none", fontSize: "0.95rem", fontWeight: 600 }}>
+                  WhatsApp Us
+                </a>
+                <a href="tel:+919876543210" style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--gold)", textDecoration: "none", fontSize: "0.95rem", fontWeight: 600 }}>
+                  Call Now
+                </a>
+              </div>
+            </div>
           </div>
 
           {/* Form panel */}
           <div className="contact-form-panel reveal">
-            {submitted ? (
+            {status === "success" ? (
               <div className="contact-form-success">
                 <div className="contact-form-success-icon">
                   <CheckCircle2 size={40} />
                 </div>
                 <h3>Enquiry Sent!</h3>
-                <p>Redirecting you to WhatsApp to connect with our travel coordinator…</p>
+                <p>Thank you! We have received your travel enquiry and will get back to you soon on WhatsApp or phone.</p>
+                <button
+                  className="contact-form-submit"
+                  style={{ marginTop: "1.5rem" }}
+                  onClick={() => setStatus("idle")}
+                >
+                  Send Another Enquiry
+                </button>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="contact-form">
@@ -93,6 +127,7 @@ export default function ContactForm() {
                       id="fullName" name="fullName" type="text"
                       placeholder="Your full name"
                       value={form.fullName} onChange={handleChange} required
+                      disabled={status === "loading"}
                     />
                   </div>
                   <div className="form-group">
@@ -101,6 +136,7 @@ export default function ContactForm() {
                       id="phone" name="phone" type="tel"
                       placeholder="+91 XXXXX XXXXX"
                       value={form.phone} onChange={handleChange} required
+                      disabled={status === "loading"}
                     />
                   </div>
                 </div>
@@ -112,6 +148,7 @@ export default function ContactForm() {
                       id="whatsapp" name="whatsapp" type="tel"
                       placeholder="Same as phone or different"
                       value={form.whatsapp} onChange={handleChange}
+                      disabled={status === "loading"}
                     />
                   </div>
                   <div className="form-group">
@@ -120,6 +157,7 @@ export default function ContactForm() {
                       id="travelers" name="travelers" type="number"
                       placeholder="e.g. 4"
                       min="1" value={form.travelers} onChange={handleChange} required
+                      disabled={status === "loading"}
                     />
                   </div>
                 </div>
@@ -127,7 +165,7 @@ export default function ContactForm() {
                 <div className="form-row">
                   <div className="form-group">
                     <label htmlFor="destination">Preferred Destination</label>
-                    <select id="destination" name="destination" value={form.destination} onChange={handleChange}>
+                    <select id="destination" name="destination" value={form.destination} onChange={handleChange} disabled={status === "loading"}>
                       <option value="">Select a destination…</option>
                       {destinations.map((d) => (
                         <option key={d} value={d}>{d}</option>
@@ -136,7 +174,7 @@ export default function ContactForm() {
                   </div>
                   <div className="form-group">
                     <label htmlFor="month">Travel Month</label>
-                    <select id="month" name="month" value={form.month} onChange={handleChange}>
+                    <select id="month" name="month" value={form.month} onChange={handleChange} disabled={status === "loading"}>
                       <option value="">Select a month…</option>
                       {months.map((m) => (
                         <option key={m} value={m}>{m}</option>
@@ -151,12 +189,34 @@ export default function ContactForm() {
                     id="message" name="message" rows={4}
                     placeholder="Tell us about your travel plans, special requirements, or any questions…"
                     value={form.message} onChange={handleChange}
+                    disabled={status === "loading"}
                   />
                 </div>
 
-                <button type="submit" className="contact-form-submit">
-                  <Send size={18} />
-                  Request Travel Details
+                {status === "error" && (
+                  <div style={{
+                    display: "flex", alignItems: "center", gap: "0.5rem",
+                    background: "rgba(239,68,68,0.12)", border: "1px solid rgba(239,68,68,0.3)",
+                    borderRadius: "8px", padding: "0.75rem 1rem",
+                    color: "#fca5a5", fontSize: "0.9rem"
+                  }}>
+                    <AlertCircle size={16} style={{ flexShrink: 0 }} />
+                    <span>{errorMsg}</span>
+                  </div>
+                )}
+
+                <button type="submit" className="contact-form-submit" disabled={status === "loading"}>
+                  {status === "loading" ? (
+                    <>
+                      <Loader2 size={18} style={{ animation: "spin 1s linear infinite" }} />
+                      Sending…
+                    </>
+                  ) : (
+                    <>
+                      <Send size={18} />
+                      Request Travel Details
+                    </>
+                  )}
                 </button>
               </form>
             )}
