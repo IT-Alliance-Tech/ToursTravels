@@ -84,6 +84,21 @@ export default function ContactForm() {
                 </div>
               ))}
             </div>
+
+            <div style={{ marginTop: "2.5rem", padding: "1.5rem", background: "rgba(255,255,255,0.04)", borderRadius: "16px", border: "1px solid rgba(255,255,255,0.08)" }}>
+              <h3 style={{ color: "white", fontSize: "1.05rem", marginBottom: "0.5rem" }}>Need immediate help?</h3>
+              <p style={{ color: "rgba(255,255,255,0.6)", fontSize: "0.9rem", marginBottom: "1.25rem", lineHeight: 1.5 }}>
+                Skip the form and reach out directly to our travel experts for instant booking and queries.
+              </p>
+              <div style={{ display: "flex", gap: "1.5rem", flexWrap: "wrap" }}>
+                <a href="https://wa.me/919876543210" target="_blank" rel="noreferrer" style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "#25D366", textDecoration: "none", fontSize: "0.95rem", fontWeight: 600 }}>
+                  WhatsApp Us
+                </a>
+                <a href="tel:+919876543210" style={{ display: "flex", alignItems: "center", gap: "0.5rem", color: "var(--gold)", textDecoration: "none", fontSize: "0.95rem", fontWeight: 600 }}>
+                  Call Now
+                </a>
+              </div>
+            </div>
           </div>
 
           {/* Form panel */}
