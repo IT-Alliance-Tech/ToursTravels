@@ -290,21 +290,23 @@ export default function PackagesPage() {
         </section>
 
         {/* FINAL CTA SECTION */}
-        <section className="cta-section">
-          <div className="cta-content reveal">
-            <h2>Start Your Spiritual Journey</h2>
-            <p>Connect with our travel coordinators to explore available departures, package details, and personalized spiritual travel experiences.</p>
-            <div className="cta-buttons">
-              <a href="https://wa.me/919876543210" className="btn-glow" target="_blank" rel="noopener noreferrer">
-                <MessageCircle size={20} />
-                WhatsApp Enquiry
-              </a>
-              <a href="/contact" className="btn-outline-white">
-                Contact Us
-              </a>
+        <div style={{ backgroundColor: "var(--white)", paddingBottom: "4rem" }}>
+          <section className="cta-section">
+            <div className="cta-content reveal">
+              <h2>Start Your Spiritual Journey</h2>
+              <p>Connect with our travel coordinators to explore available departures, package details, and personalized spiritual travel experiences.</p>
+              <div className="cta-buttons">
+                <a href="https://wa.me/919876543210" className="btn-glow" target="_blank" rel="noopener noreferrer">
+                  <MessageCircle size={20} />
+                  WhatsApp Enquiry
+                </a>
+                <a href="/contact" className="btn-outline-white">
+                  Contact Us
+                </a>
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        </div>
       </main>
 
       <Footer />
