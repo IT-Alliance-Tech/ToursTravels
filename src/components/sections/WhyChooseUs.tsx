@@ -37,11 +37,16 @@ const features = [
 
 export default function WhyChooseUs() {
   return (
-    <section className="section bg-white relative" id="why-us">
+    <section className="section why-choose-section" id="why-us" style={{ backgroundColor: "#FFFBF0" }}>
+      {/* Background Glow Orbs */}
+      <div className="why-choose-bg-orb why-choose-bg-orb-1"></div>
+      <div className="why-choose-bg-orb why-choose-bg-orb-2"></div>
+      <div className="why-choose-bg-orb why-choose-bg-orb-3"></div>
+
       <div className="section-container relative z-10">
         
         {/* Section Header */}
-        <div style={{ textAlign: "center", marginBottom: "4rem" }}>
+        <div className="why-choose-header">
           <span className="section-label">Our Promise</span>
           <h2 className="section-title">Why Families Choose Us</h2>
           <p className="section-subtitle" style={{ margin: "0 auto" }}>
@@ -49,24 +54,25 @@ export default function WhyChooseUs() {
           </p>
         </div>
 
-        {/* Clean 3-Column Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-12 gap-y-14">
+        {/* Premium Glassmorphism Grid */}
+        <div className="why-choose-grid">
           {features.map((feature, i) => {
             const Icon = feature.icon;
             return (
-              <div key={i} className="flex flex-col items-start text-left group">
-                {/* Minimalist Icon */}
-                <div className="w-16 h-16 rounded-2xl bg-[#FFF7ED] flex items-center justify-center mb-6 group-hover:scale-105 group-hover:-translate-y-1 group-hover:bg-[#D97706] transition-all duration-300">
-                  <Icon size={30} className="text-[#D97706] group-hover:text-white transition-colors duration-300" strokeWidth={1.5} />
+              <div key={i} className="why-choose-card group">
+                <div 
+                  className="why-choose-card-icon" 
+                  style={{ 
+                    background: "linear-gradient(135deg, var(--saffron), var(--gold))" 
+                  }}
+                >
+                  <Icon size={28} color="white" strokeWidth={1.8} />
                 </div>
                 
-                {/* Content */}
-                <h3 className="text-xl font-bold text-gray-900 mt-2 mb-3 font-[family-name:var(--font-heading)]">
-                  {feature.title}
-                </h3>
-                <p className="text-gray-500 leading-relaxed text-base">
-                  {feature.desc}
-                </p>
+                <div className="why-choose-card-content">
+                  <h3>{feature.title}</h3>
+                  <p>{feature.desc}</p>
+                </div>
               </div>
             );
           })}
@@ -76,4 +82,3 @@ export default function WhyChooseUs() {
     </section>
   );
 }
-

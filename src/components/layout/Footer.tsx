@@ -75,14 +75,6 @@ export default function Footer() {
 
         <div className="footer-bottom">
           <p>© 2026 ToursAndTravels.online — Premium Spiritual Travel Experiences for Families &amp; Senior Citizens.</p>
-          <div className="footer-social">
-            <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
-              <AtSign size={16} />
-            </a>
-            <a href="https://wa.me/919876543210" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
-              <MessageCircle size={16} />
-            </a>
-          </div>
         </div>
       </div>
     </footer>
